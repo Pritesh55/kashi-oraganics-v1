@@ -1,0 +1,44 @@
+
+Table Editor :: Blue-bird
+https://supabase.com/dashboard/project/kluejlwnuxmvqwamabdo/editor
+
+
+Tutorial :: Nextjs with supabase
+https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs?language=js#initialize-a-nextjs-app
+
+<# 01 #> npx create-next-app@latest --use-npm kashi-oraganics-v1;
+
+√ Would you like to use TypeScript? ... No / Yes 
+Ans :: No (We will use JvaScript...)
+
+√ Would you like to use ESLint? ... No / Yes
+Ans :: Yes
+
+√ Would you like to use Tailwind CSS? ... No / Yes
+Ans :: Yes
+
+√ Would you like to use `src/` directory? ... No / Yes
+Ans :: Yes
+
+√ Would you like to use App Router? (recommended) ... No / Yes
+Ans :: Yes
+
+√ Would you like to customize the default import alias (@/*)? ... No / Yes
+Ans :: No
+
+<# 02 #> cd .\kashi-oraganics-v1\
+// After typing cd, Press Tab key :: to auto select Created folder
+
+<# 03 #> code .
+// go to visual studio code... 
+
+<# 04 #> npm run dev
+// Run on browser chrome 
+
+(Chrome Browser)
+Go to :: http://localhost:3000
+
+(in powershell) 
+Ctrl + Click ::  
+Local:        http://localhost:3000
+
