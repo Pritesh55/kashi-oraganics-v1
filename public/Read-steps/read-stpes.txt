@@ -42,3 +42,10 @@ Go to :: http://localhost:3000
 Ctrl + Click ::  
 Local:        http://localhost:3000
 
+# --------------------------------------------------------------------
+v2 :: 02-Add-Local-Repository-to-Github With Github-desktop ::
+
+-----------------------------------------
+v3 :: 03-Deploy-your-project-to-vercel
+
+
