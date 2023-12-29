@@ -193,22 +193,39 @@ export default function Login() {
                     // array has only one Object :: findUserProfileData[0]
 
                     let findUserProfileDataObject = findUserProfileData[0];
+
+
                     setUserProfile(findUserProfileDataObject);
 
-                    setFirst_name(findUserProfileDataObject.first_name);
-                    setLast_name(findUserProfileDataObject.last_name);
-                    setEmail_id_Profile_Update(findUserProfileDataObject.email_id);
-                    setMobile_number(findUserProfileDataObject.mobile_number);
-                    setWhatsapp_number(findUserProfileDataObject.whatsapp_number);
-                    setAddress(findUserProfileDataObject.address);
+                    if (findUserProfileDataObject?.first_name == null) {
+                        setFirst_name('');
+                    } else {
+                        setFirst_name(findUserProfileDataObject.first_name);
+                    }
+
+                    (findUserProfileDataObject.last_name == null) ?
+                        setLast_name('') :
+                        setLast_name(findUserProfileDataObject.last_name);
+
+                    (findUserProfileDataObject.email_id == null) ?
+                        setEmail_id_Profile_Update('') :
+                        setEmail_id_Profile_Update(findUserProfileDataObject.email_id);
+
+                    (findUserProfileDataObject.mobile_number == null) ?
+                        setMobile_number('') :
+                        setMobile_number(findUserProfileDataObject.mobile_number);
+
+                    (findUserProfileDataObject.whatsapp_number == null) ?
+                        setWhatsapp_number('') :
+                        setWhatsapp_number(findUserProfileDataObject.whatsapp_number);
+
+                    (findUserProfileDataObject.address == null) ?
+                        setAddress('') :
+                        setAddress(findUserProfileDataObject.address);
 
                 } else {
                     console.log(`findUserProfileData :: Can't find userData`);
                     console.log(`findUserProfileError= `, findUserProfileError);
-
-                    wait(7000);
-
-                    setUserChange(!userChange);
                 }
             }
             // "sessionData?.session" :: 2) null 
