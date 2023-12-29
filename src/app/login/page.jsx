@@ -899,6 +899,7 @@ export default function Login() {
 
                             <button onClick={() => {
                                 setIsAlreadyRegistered(false);
+                                setPasswordError('');
                                 setIsSignInInvalid(false);
                                 handleSignIn();
                             }} className="w-1/2 text-white bg-red-500 hover:bg-red-600 border-0  focus:outline-none  rounded text-lg min-w-max">
