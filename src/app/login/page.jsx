@@ -197,29 +197,29 @@ export default function Login() {
 
                     setUserProfile(findUserProfileDataObject);
 
-                    if (findUserProfileDataObject?.first_name == null) {
+                    if (findUserProfileDataObject?.first_name == "null") {
                         setFirst_name('');
                     } else {
                         setFirst_name(findUserProfileDataObject.first_name);
                     }
 
-                    (findUserProfileDataObject.last_name == null) ?
+                    (findUserProfileDataObject.last_name == "null") ?
                         setLast_name('') :
                         setLast_name(findUserProfileDataObject.last_name);
 
-                    (findUserProfileDataObject.email_id == null) ?
+                    (findUserProfileDataObject.email_id == "null") ?
                         setEmail_id_Profile_Update('') :
                         setEmail_id_Profile_Update(findUserProfileDataObject.email_id);
 
-                    (findUserProfileDataObject.mobile_number == null) ?
+                    (findUserProfileDataObject.mobile_number == "null") ?
                         setMobile_number('') :
                         setMobile_number(findUserProfileDataObject.mobile_number);
 
-                    (findUserProfileDataObject.whatsapp_number == null) ?
+                    (findUserProfileDataObject.whatsapp_number == "null") ?
                         setWhatsapp_number('') :
                         setWhatsapp_number(findUserProfileDataObject.whatsapp_number);
 
-                    (findUserProfileDataObject.address == null) ?
+                    (findUserProfileDataObject.address == "null") ?
                         setAddress('') :
                         setAddress(findUserProfileDataObject.address);
 
@@ -444,7 +444,15 @@ export default function Login() {
             const { data: insertUserProfies, error: insertUserProfilesError } = await supabase
                 .from('profiles')
                 .insert([
-                    { user_id: signUpData.user.id, email_id: signUpData.user.email },
+                    {
+                        user_id: signUpData.user.id,
+                        email_id: signUpData.user.email,
+                        first_name:'',
+                        last_name:'',
+                        mobile_number:'',
+                        whatsapp_number:'',
+                        address:'',
+                    },
                 ])
                 .select();
 
@@ -453,17 +461,39 @@ export default function Login() {
 
             let insertProfileDataObject = insertUserProfies[0];
 
+            console.log(`insertProfileDataObject= `, insertProfileDataObject);
+
             setUserProfile(insertProfileDataObject);
-            setFirst_name(insertProfileDataObject.first_name);
-            setLast_name(insertProfileDataObject.last_name);
-            setEmail_id_Profile_Update(insertProfileDataObject.email_id);
 
-            setWhatsapp_number(insertProfileDataObject.whatsapp_number);
-            setMobile_number(insertProfileDataObject.mobile_number);
-            setAddress(insertProfileDataObject.address);
+            (insertProfileDataObject.first_name == "null") ?
+                setFirst_name('') :
+                setFirst_name(insertProfileDataObject.first_name);
 
+            (insertProfileDataObject.last_name == "null") ?
+                setLast_name('') :
+                setLast_name(insertProfileDataObject.last_name);
 
+            (insertProfileDataObject.email_id == "null") ?
+                setEmail_id_Profile_Update('') :
+                setEmail_id_Profile_Update(insertProfileDataObject.email_id);
+
+            (insertProfileDataObject.mobile_number == "null") ?
+                setMobile_number('') :
+                setMobile_number(insertProfileDataObject.mobile_number);
+
+            (insertProfileDataObject.whatsapp_number == "null") ?
+                setWhatsapp_number('') :
+                setWhatsapp_number(insertProfileDataObject.whatsapp_number);
+
+            (insertProfileDataObject.address == "null") ?
+                setAddress('') :
+                setAddress(insertProfileDataObject.address);
         }
+
+
+
+
+
 
         // step 14.04 :: if Theres is "SignUp Error",
         if (signUpError !== null) {
@@ -514,23 +544,49 @@ export default function Login() {
         console.log(`updateProfileData= `, updateProfileData);
         console.log(`updateProfileError= `, updateProfileError);
 
-        let updateProfileDataObject = updateProfileData[0];
+        if (updateProfileData !== null &&
+            updateProfileData[0] !== undefined &&
+            updateProfileError == null) {
 
-        setUserProfile(updateProfileDataObject);
-        setFirst_name(updateProfileDataObject.first_name);
-        setLast_name(updateProfileDataObject.last_name);
-        setEmail_id_Profile_Update(updateProfileDataObject.email_id);
+            let updateProfileDataObject = updateProfileData[0];
 
-        setWhatsapp_number(updateProfileDataObject.whatsapp_number);
-        setMobile_number(updateProfileDataObject.mobile_number);
-        setAddress(updateProfileDataObject.address);
+            console.log(`updateProfileDataObject= `, updateProfileDataObject);
+
+            setUserProfile(updateProfileDataObject);
+
+            (updateProfileDataObject.first_name == "null") ?
+                setFirst_name('') :
+                setFirst_name(updateProfileDataObject.first_name);
+
+            (updateProfileDataObject.last_name == "null") ?
+                setLast_name('') :
+                setLast_name(updateProfileDataObject.last_name);
+
+            (updateProfileDataObject.email_id == "null") ?
+                setEmail_id_Profile_Update('') :
+                setEmail_id_Profile_Update(updateProfileDataObject.email_id);
+
+            (updateProfileDataObject.mobile_number == "null") ?
+                setMobile_number('') :
+                setMobile_number(updateProfileDataObject.mobile_number);
+
+            (updateProfileDataObject.whatsapp_number == "null") ?
+                setWhatsapp_number('') :
+                setWhatsapp_number(updateProfileDataObject.whatsapp_number);
+
+            (updateProfileDataObject.address == "null") ?
+                setAddress('') :
+                setAddress(updateProfileDataObject.address);
+        }
+
+
 
     }
 
     // 2nd screen :: Logged In screen...
     // step 11.15.01 :: if "session.user" :: Object exist ::
     if (user) {
-        console.log(email_id);
+
         return (
             <>
                 <section className="text-gray-600 body-font bg-white min-h-screen">
