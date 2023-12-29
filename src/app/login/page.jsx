@@ -439,11 +439,11 @@ export default function Login() {
             setUserProfile(insertProfileDataObject);
             setFirst_name(insertProfileDataObject.first_name);
             setLast_name(insertProfileDataObject.last_name);
-            setEmail_id_Profile_Update(insertProfileDataObject.email_id_Profile_Update);
+            setEmail_id_Profile_Update(insertProfileDataObject.email_id);
 
             setWhatsapp_number(insertProfileDataObject.whatsapp_number);
-            setMobile_number(insertProfileDataObject.setMobile_number);
-            setAddress(insertProfileDataObject.setAddress);
+            setMobile_number(insertProfileDataObject.mobile_number);
+            setAddress(insertProfileDataObject.address);
 
 
         }
@@ -502,11 +502,11 @@ export default function Login() {
         setUserProfile(updateProfileDataObject);
         setFirst_name(updateProfileDataObject.first_name);
         setLast_name(updateProfileDataObject.last_name);
-        setEmail_id_Profile_Update(updateProfileDataObject.email_id_Profile_Update);
+        setEmail_id_Profile_Update(updateProfileDataObject.email_id);
 
         setWhatsapp_number(updateProfileDataObject.whatsapp_number);
-        setMobile_number(updateProfileDataObject.setMobile_number);
-        setAddress(updateProfileDataObject.setAddress);
+        setMobile_number(updateProfileDataObject.mobile_number);
+        setAddress(updateProfileDataObject.address);
 
     }
 
