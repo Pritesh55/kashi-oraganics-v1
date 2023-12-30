@@ -1,0 +1,63 @@
+For our simple grocery app, we'll only require 4 of these tables.
+
+# app_users: 
+This is the table where we will store our users, it will have the same primary ID with the supabase auth users. I was not able to use just the users table since it cannot be read publicly so I had to create this table.
+
+# groceries: 
+All the grocery list of each user will be stored in this table.
+
+# products: 
+All of the products created by the user will be stored in this table.
+
+# grocery_products: 
+This is where we sort of link the products with a grocery. This is what we call a pivot table.
+
+
+Our app_users table has a One to Many relationship with the two tables we created namely products and groceries. 
+
+since a "user" can have "Only One grocery" listing and can also have "many products" in that grocery listing.
+
+Then for our groceries table we have the "created_by column" as a foreign key so that will link to the "app_users" table which will then identify it as part of the user's "grocery listing" in our application.
+
+
+Then for our pivot table which is a "Many to Many relationship", because a "grocery listing" can have "many products" and "a product" can belong to "many grocery listing".
+
+
+primary key id
+column name as a varchar
+created_by app_users
+
+
+https://dummyjson.com/products
+
+
+
+const { data, error } = await supabase
+  .from('products')
+  .insert([
+    { some_column: 'someValue', other_column: 'otherValue' },
+  ])
+  .select()
+
+
+# -------------------------------------------------------------------------------
+{
+    ((ptDataIsLoading !== true) & (ptData !== undefined)) && <>
+        {
+            ptData.products.map(
+                (curpt, index) => {
+                    return (
+                        <>
+                            <div className="">
+
+                            </div>
+                        </>
+                    )
+                }
+            )
+        }
+
+    </>
+}
+# -------------------------------------------------------------------------------
+

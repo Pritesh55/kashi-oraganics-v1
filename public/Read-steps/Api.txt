@@ -1,0 +1,20 @@
+
+
+https://supabase.com/docs/reference/javascript/auth-signup
+const { data, error } = await supabase.auth.signUp(
+    {
+      email: 'example@email.com',
+      password: 'example-password',
+      options: {
+        data: {
+          first_name: 'John',
+          age: 27,
+        }
+      }
+    }
+  )
+
+https://supabase.com/docs/reference/javascript/auth-updateuser?example=update-the-users-metadata
+const { data, error } = await supabase.auth.updateUser({
+    data: { hello: 'world' }
+})

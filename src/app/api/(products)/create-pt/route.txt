@@ -1,0 +1,17 @@
+const { data: insertProductData, error: insertProductError } = await supabase
+.from('products')
+.insert([
+    {
+        pt_title: '',
+        pt_description: '',     
+        pt_price: ,             //  number
+        pt_category: '',        
+        pt_brand: '',
+        pt_images: '',
+        pt_discount_percent: ,  //  number
+        pt_stock: ,             //  number
+        pt_rating: ,            //  number
+        pt_photo_thumbnail: '',
+    },
+])
+.select()
