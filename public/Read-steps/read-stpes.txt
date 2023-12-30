@@ -6,6 +6,9 @@ https://supabase.com/dashboard/project/kluejlwnuxmvqwamabdo/editor
 Tutorial :: Nextjs with supabase
 https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs?language=js#initialize-a-nextjs-app
 
+Initialize a Next.js app
+----------------------------
+
 <# 01 #> npx create-next-app@latest --use-npm kashi-oraganics-v1;
 
 √ Would you like to use TypeScript? ... No / Yes 
@@ -47,5 +50,436 @@ v2 :: 02-Add-Local-Repository-to-Github With Github-desktop ::
 
 -----------------------------------------
 v3 :: 03-Deploy-your-project-to-vercel
+https://vercel.com/dashboard
+
+-------------------------------------------------------------
+App styling (optional) ::
+https://github.com/supabase/supabase/blob/master/examples/user-management/nextjs-user-management/app/globals.css
+
+--------------------------------------------
+
+https://supabase.com/docs/guides/auth/auth-helpers/nextjs?language=js#install-nextjs-auth-helpers-library
+
+install the Supabase client library: supabase-js
+-----------------------------------
+<# 05 #> npm install @supabase/supabase-js
+
+
+Install the auth helpers for Next.js
+-------------------------------------
+<# 06 #> npm install @supabase/auth-helpers-nextjs
+
+middleware
+-------------
+Create a new "middleware.js" file in the root of your project...
+Then Copy-paste below code to "middleware.js"
+----------------------------------------------------
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
+import { NextResponse } from 'next/server'
+
+export async function middleware(req) {
+  const res = NextResponse.next()
+
+  // Create a Supabase client configured to use cookies
+  const supabase = createMiddlewareClient({ req, res })
+
+  // Refresh session if expired - required for Server Components
+  await supabase.auth.getSession()
+
+  return res
+}
+
+// Ensure the middleware is only called for relevant paths.
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
+}
+----------------------------------------------------
+
+Managing sign-in with Code Exchange ::
+
+Create a new file at app/auth/callback/route.js
+Then Copy-paste below code to "route.js"....
+----------------------------------------------------
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+
+export async function GET(request) {
+  const requestUrl = new URL(request.url)
+  const code = requestUrl.searchParams.get('code')
+
+  if (code) {
+    const cookieStore = cookies()
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+    await supabase.auth.exchangeCodeForSession(code)
+  }
+
+  // URL to redirect to after sign in process completes
+  return NextResponse.redirect(requestUrl.origin)
+}
+----------------------------------------------------
+
+Authentication ::
+-------------------
+
+We will not do "Client Side"...
+
+Server-side#
+---------------
+The combination of Server Components and Route Handlers can be used to trigger the authentication process from form submissions.
+
+app/auth/sign-up/route.js
+----------------------------
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+
+export async function POST(request) {
+  const requestUrl = new URL(request.url)
+  const formData = await request.formData()
+  const email = formData.get('email')
+  const password = formData.get('password')
+  const cookieStore = cookies()
+  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+
+  await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${requestUrl.origin}/auth/callback`,
+    },
+  })
+
+  return NextResponse.redirect(requestUrl.origin, {
+    status: 301,
+  })
+}
+--------------------------------------------------------------
+
+app/auth/login/route.js
+-------------------------------
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+
+export async function POST(request) {
+  const requestUrl = new URL(request.url)
+  const formData = await request.formData()
+  const email = formData.get('email')
+  const password = formData.get('password')
+  const cookieStore = cookies()
+  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+
+  await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
+
+  return NextResponse.redirect(requestUrl.origin, {
+    status: 301,
+  })
+}
+
+--------------------------------------------------------------
+
+app/auth/logout/route.js
+-+--------------------------
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+
+export async function POST(request) {
+  const requestUrl = new URL(request.url)
+  const cookieStore = cookies()
+  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+
+  await supabase.auth.signOut()
+
+  return NextResponse.redirect(`${requestUrl.origin}/login`, {
+    status: 301,
+  })
+}
+--------------------------------------------------------------
+
+app/login/page.jsx
+------------------------
+export default function Login() {
+  return (
+    <form action="/auth/login" method="post">
+      <label htmlFor="email">Email</label>
+      <input name="email" />
+      <label htmlFor="password">Password</label>
+      <input type="password" name="password" />
+      <button>Sign In</button>
+      <button formAction="/auth/sign-up">Sign Up</button>
+      <button formAction="/auth/logout">Sign Out</button>
+    </form>
+  )
+}
+
+
+https://supabase.com/dashboard/project/okfvfltvjlpvzhiqhgyp/auth/users
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Next.js middleware ::
+------------------------
+Create a "middleware.js" file at root path
+
+and copy-paste the following code....
+-----------------------------------------------------------------------------
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
+import { NextResponse } from 'next/server'
+
+export async function middleware(req) {
+  const res = NextResponse.next()
+
+  // Create a Supabase client configured to use cookies
+  const supabase = createMiddlewareClient({ req, res })
+
+  // Refresh session if expired - required for Server Components
+  await supabase.auth.getSession()
+
+  return res
+}
+
+// Ensure the middleware is only called for relevant paths.
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
+}
+-----------------------------------------------------------------------------
+
+Set up a login component ::
+-----------------------------
+
+npm install @supabase/auth-ui-react @supabase/auth-ui-shared
+
+
+Create an "AuthForm" client side component ::
+----------------------------------------------
+'use client'
+import { Auth } from '@supabase/auth-ui-react'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+
+export default function AuthForm() {
+  const supabase = createClientComponentClient()
+
+  return (
+    <Auth
+      supabaseClient={supabase}
+      view="magic_link"
+      appearance={{ theme: ThemeSupa }}
+      theme="dark"
+      showLinks={false}
+      providers={[]}
+      redirectTo={`${process.env.REDIRECT_URL}/auth/callback`}
+    />
+  )
+}
+
+------------------------------------------------------
+`} 
+--> Edit 
+From :: redirectTo="" => 
+To   :: redirectTo={`${process.env.REDIRECT_URL}/auth/callback`} 
+
+`} 
+-----------------------------------------------------------------
+
+
+
+Add the AuthForm component to your home page
+-------------------------------------
+import AuthForm from "./components/AuthForm";
+
+export default function Home() {
+  return (
+    <div className="row">
+      <div className="col-6">
+        <h1 className="header">Supabase Auth + Storage</h1>
+        <p className="">
+          Experience our Auth and Storage through a simple profile management example. Create a user
+          profile and upload an avatar image. Fast, simple, secure.
+        </p>
+      </div>
+      <div className="col-6 auth-widget">
+        <AuthForm />
+      </div>
+    </div>
+  )
+}
+
+-------------------------------------
+--> Edit :: 
+from ::  import AuthForm from './auth-form'; 
+To   ::  import AuthForm from "./components/AuthForm";
+
+-------------------------------------------------------------
+
+Proof Key for Code Exchange (PKCE)
+------------------------------------
+Create file route.js at "auth / callback / route.js"
+
+
+
+src/app/ => auth / callback / route.js
+----------------------------------------------
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+
+export async function GET(req) {
+  const cookieStore = cookies()
+  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+  const { searchParams } = new URL(req.url)
+  const code = searchParams.get('code')
+
+  if (code) {
+    await supabase.auth.exchangeCodeForSession(code)
+  }
+
+  return NextResponse.redirect(new URL('/account', req.url))
+}
+
+
+Sign out ::
+--------------
+src/app =>  app/auth/signout/route.js
+------------------------------------------
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+
+export async function POST(req) {
+  const cookieStore = cookies()
+  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+
+  // Check if we have a session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (session) {
+    await supabase.auth.signOut()
+  }
+
+  return NextResponse.redirect(new URL('/', req.url), {
+    status: 302,
+  })
+}
+--------------------------------------------------------
+
+
+------------------------------------------------------------
+
+# यदि user_id duplicate Error (23505) आती हैं तो , इसका मतलब user_id तो हैं ,तो उसके बाद email_id update करने के लिए ....
+if (uaptError.code == 23505) {
+  // emuppr :: "em ail_id" is "Up dated" to "Pr ofiles" "T able"
+  // -------------------------------------
+  const { data: emupprt, error } = await supabase
+      .from('profiles')
+      .update({ email_id: sessionData.session.user.email })
+      .eq('user_id', sessionData.session.user.id)
+      .select();
+}
+
+
+
+
+
+
+# ----------------------------------------------------------------------------------
+// Find by user_id
+// -------------------
+const { data: findUserData, error: findUserError } = await supabase
+    .from('profiles')
+    .select()
+    .eq('user_id', sessionData.session.user.id);
+
+// console.log(findUserData);
+// console.log(findUserError);
+
+if (findUserData !== null &&
+    findUserData[0] !== undefined &&
+    findUserError == null) {
+    console.log(`findUserData ::`);
+    console.log(findUserData);
+    // console.log(findUserError);
+}
+
+else {
+
+    // uapt :: "user" is "Added" to "Profiles" "Table"
+    // -------------------------------------
+    const { data: uaptData, error: uaptError } = await supabase
+        .from('profiles')
+        .insert({ user_id: `${sessionData.session.user.id}`, email_id: sessionData.session.user.email })
+        .select();
+    // -------------------------------------
+    console.log(`"user" is "Added" to "Profiles" "Table ?"=`, uaptData);
+    if (uaptError) {
+        console.log(uaptError?.code);
+        // -------------------------------------
+    }
+
+}
+
+# ----------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 
