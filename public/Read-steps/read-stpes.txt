@@ -6,6 +6,9 @@ https://supabase.com/dashboard/project/kluejlwnuxmvqwamabdo/editor
 Tutorial :: Nextjs with supabase
 https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs?language=js#initialize-a-nextjs-app
 
+Initialize a Next.js app
+----------------------------
+
 <# 01 #> npx create-next-app@latest --use-npm kashi-oraganics-v1;
 
 √ Would you like to use TypeScript? ... No / Yes 
@@ -47,8 +50,6 @@ v2 :: 02-Add-Local-Repository-to-Github With Github-desktop ::
 
 -----------------------------------------
 v3 :: 03-Deploy-your-project-to-vercel
-<<<<<<< Updated upstream
-=======
 https://vercel.com/dashboard
 
 -------------------------------------------------------------
@@ -475,23 +476,10 @@ else {
 
 
 
-https://swr.vercel.app/docs/getting-started
------------------------------------------------
-pt_title: ``,
-pt_description: ``,
-pt_category: ``,
-pt_brand: ``,
-pt_images: ``,
-pt_photo_thumbnail: ``,
-
-pt_price,
-pt_discount_percent,
-pt_rating,
-pt_stock
 
 
 
 
->>>>>>> Stashed changes
+
 
 
